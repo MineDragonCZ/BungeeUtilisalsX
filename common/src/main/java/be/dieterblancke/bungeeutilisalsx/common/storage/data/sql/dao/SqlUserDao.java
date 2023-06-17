@@ -73,6 +73,27 @@ public class SqlUserDao implements UserDao
     }
 
     @Override
+    public CompletableFuture<Void> updateUserCurrentServer(UUID uuid, String serverName){
+        return CompletableFuture.runAsync( () ->
+        {
+            try ( Connection connection = BuX.getApi().getStorageManager().getConnection();
+                  PreparedStatement pstmt = connection.prepareStatement(
+                          "UPDATE bu_users SET current_server = ? WHERE uuid = ?;"
+                  ) )
+            {
+                pstmt.setString( 1, serverName );
+                pstmt.setString( 2, uuid.toString() );
+
+                pstmt.executeUpdate();
+            }
+            catch ( SQLException e )
+            {
+                BuX.getLogger().log( Level.SEVERE, "An error occured: ", e );
+            }
+        }, BuX.getInstance().getScheduler().getExecutorService() );
+    }
+
+    @Override
     public CompletableFuture<Void> updateUser( UUID uuid, String name, String ip, Language language, Date logout )
     {
         return CompletableFuture.runAsync( () ->

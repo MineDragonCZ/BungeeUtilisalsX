@@ -36,6 +36,11 @@ public class MongoUserDao implements UserDao
     }
 
     @Override
+    public CompletableFuture<Void> updateUserCurrentServer(UUID uuid, String serverName){
+        return CompletableFuture.runAsync(() -> {});
+    }
+
+    @Override
     public CompletableFuture<Void> createUser( UUID uuid, String username, String ip, Language language, Date login, Date logout, String joinedHost )
     {
         return CompletableFuture.runAsync( () ->

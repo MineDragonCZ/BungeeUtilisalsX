@@ -34,7 +34,7 @@ public class UserConnectionListener implements Listener
     {
         final Optional<User> optional = BuX.getApi().getUser( event.getPlayer().getName() );
 
-        if ( !optional.isPresent() )
+        if (optional.isEmpty())
         {
             return;
         }
@@ -47,7 +47,7 @@ public class UserConnectionListener implements Listener
     {
         final Optional<User> optional = BuX.getApi().getUser( event.getPlayer().getName() );
 
-        if ( !optional.isPresent() )
+        if (optional.isEmpty())
         {
             return;
         }
@@ -68,7 +68,7 @@ public class UserConnectionListener implements Listener
     {
         final Optional<User> optional = BuX.getApi().getUser( event.getPlayer().getName() );
 
-        if ( !optional.isPresent() )
+        if (optional.isEmpty())
         {
             return;
         }
@@ -79,5 +79,10 @@ public class UserConnectionListener implements Listener
                 BuX.getInstance().proxyOperations().getServerInfo( event.getServer().getInfo().getName() )
         );
         BuX.getApi().getEventLoader().launchEvent( userServerConnectedEvent );
+
+        if(!userServerConnectedEvent.isCancelled()){
+            String serverName = event.getServer().getInfo().getName();
+            BuX.getInstance().getAbstractStorageManager().getDao().getUserDao().updateUserCurrentServer(optional.get().getUuid(), serverName);
+        }
     }
 }

@@ -17,6 +17,8 @@ public interface UserDao
 
     CompletableFuture<Void> updateUser( UUID uuid, String name, String ip, Language language, Date logout );
 
+    CompletableFuture<Void> updateUserCurrentServer( UUID uuid, String serverName);
+
     CompletableFuture<Boolean> exists( String name );
 
     CompletableFuture<Boolean> ipExists( String ip );
