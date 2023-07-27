@@ -119,7 +119,6 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <executable>true</executable>
-                    <fork>false</fork>
                     <mainClass>be.dieterblancke.bungeeutilisalsx.webapi.Bootstrap</mainClass>
                 </configuration>
             </plugin>

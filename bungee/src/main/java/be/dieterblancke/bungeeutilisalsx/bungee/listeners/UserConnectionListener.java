@@ -4,7 +4,6 @@ import be.dieterblancke.bungeeutilisalsx.bungee.user.BungeeUser;
 import be.dieterblancke.bungeeutilisalsx.bungee.utils.BungeeServer;
 import be.dieterblancke.bungeeutilisalsx.common.BuX;
 import be.dieterblancke.bungeeutilisalsx.common.api.event.events.user.UserServerConnectEvent;
-import be.dieterblancke.bungeeutilisalsx.common.api.event.events.user.UserServerConnectEvent.ConnectReason;
 import be.dieterblancke.bungeeutilisalsx.common.api.event.events.user.UserServerConnectedEvent;
 import be.dieterblancke.bungeeutilisalsx.common.api.event.events.user.UserServerKickEvent;
 import be.dieterblancke.bungeeutilisalsx.common.api.user.interfaces.User;
@@ -18,99 +17,89 @@ import net.md_5.bungee.event.EventPriority;
 
 import java.util.Optional;
 
-public class UserConnectionListener implements Listener
-{
+public class UserConnectionListener implements Listener {
 
     @EventHandler
-    public void onConnect( final PostLoginEvent event )
-    {
+    public void onConnect(final PostLoginEvent event) {
         final BungeeUser user = new BungeeUser();
 
-        user.load( event.getPlayer() );
+        user.load(event.getPlayer());
     }
 
     // Executing on LOWEST priority to get it to execute early on in the quit procedure
-    @EventHandler( priority = EventPriority.LOWEST )
-    public void onDisconnect( final PlayerDisconnectEvent event )
-    {
-        final Optional<User> optional = BuX.getApi().getUser( event.getPlayer().getName() );
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onDisconnect(final PlayerDisconnectEvent event) {
+        final Optional<User> optional = BuX.getApi().getUser(event.getPlayer().getName());
 
-        if ( optional.isEmpty() )
-        {
+        if (optional.isEmpty()) {
             return;
         }
         final User user = optional.get();
+        BuX.getInstance().getAbstractStorageManager().getDao().getUserDao().updateUserCurrentServer(user.getUuid(), "");
         user.unload();
     }
 
     @EventHandler
-    public void onConnect( final ServerConnectEvent event )
-    {
-        final Optional<User> optional = BuX.getApi().getUser( event.getPlayer().getName() );
+    public void onConnect(final ServerConnectEvent event) {
+        final Optional<User> optional = BuX.getApi().getUser(event.getPlayer().getName());
 
-        if ( optional.isEmpty() )
-        {
+        if (optional.isEmpty()) {
             return;
         }
         final UserServerConnectEvent userServerConnectEvent = new UserServerConnectEvent(
                 optional.get(),
-                BuX.getInstance().proxyOperations().getServerInfo( event.getTarget().getName() )
+                BuX.getInstance().serverOperations().getServerInfo(event.getTarget().getName()),
+                UserServerConnectEvent.ConnectReason.parse(event.getReason().toString())
         );
-        BuX.getApi().getEventLoader().launchEvent( userServerConnectEvent );
-        if ( userServerConnectEvent.isCancelled() )
-        {
-            event.setCancelled( true );
+        BuX.getApi().getEventLoader().launchEvent(userServerConnectEvent);
+        if (userServerConnectEvent.isCancelled()) {
+            event.setCancelled(true);
         }
 
-        event.setTarget( ( (BungeeServer) userServerConnectEvent.getTarget() ).getServerInfo() );
+        event.setTarget(((BungeeServer) userServerConnectEvent.getTarget()).getServerInfo());
     }
 
     @EventHandler
-    public void onConnect( final ServerConnectedEvent event )
-    {
-        final Optional<User> optional = BuX.getApi().getUser( event.getPlayer().getName() );
+    public void onConnect(final ServerConnectedEvent event) {
+        final Optional<User> optional = BuX.getApi().getUser(event.getPlayer().getName());
 
-        if ( optional.isEmpty() )
-        {
+        if (optional.isEmpty()) {
             return;
         }
         final UserServerConnectedEvent userServerConnectedEvent = new UserServerConnectedEvent(
                 optional.get(),
-                Optional.ofNullable( Strings.emptyToNull( optional.get().getServerName() ) )
-                        .map( BuX.getInstance().proxyOperations()::getServerInfo ),
-                BuX.getInstance().proxyOperations().getServerInfo( event.getServer().getInfo().getName() )
+                Optional.ofNullable(Strings.emptyToNull(optional.get().getServerName()))
+                        .map(BuX.getInstance().serverOperations()::getServerInfo),
+                BuX.getInstance().serverOperations().getServerInfo(event.getServer().getInfo().getName())
         );
-        BuX.getApi().getEventLoader().launchEvent( userServerConnectedEvent );
+        BuX.getApi().getEventLoader().launchEvent(userServerConnectedEvent);
 
-        if(!userServerConnectedEvent.isCancelled()){
+        if (!userServerConnectedEvent.isCancelled()) {
             String serverName = event.getServer().getInfo().getName();
             BuX.getInstance().getAbstractStorageManager().getDao().getUserDao().updateUserCurrentServer(optional.get().getUuid(), serverName);
         }
     }
 
     @EventHandler
-    public void onConnect( ServerKickEvent event )
-    {
-        Optional<User> optional = BuX.getApi().getUser( event.getPlayer().getName() );
+    public void onConnect(ServerKickEvent event) {
+        Optional<User> optional = BuX.getApi().getUser(event.getPlayer().getName());
 
-        if ( optional.isEmpty() )
-        {
+        if (optional.isEmpty()) {
             return;
         }
 
         GsonComponentSerializer componentSerializer = GsonComponentSerializer.gson();
         UserServerKickEvent userServerKickEvent = new UserServerKickEvent(
                 optional.get(),
-                event.getKickedFrom() == null ? null : BuX.getInstance().serverOperations().getServerInfo( event.getKickedFrom().getName() ),
-                event.getCancelServer() == null ? null : BuX.getInstance().serverOperations().getServerInfo( event.getCancelServer().getName() ),
-                componentSerializer.deserialize( ComponentSerializer.toString( event.getKickReasonComponent() ) )
+                event.getKickedFrom() == null ? null : BuX.getInstance().serverOperations().getServerInfo(event.getKickedFrom().getName()),
+                event.getCancelServer() == null ? null : BuX.getInstance().serverOperations().getServerInfo(event.getCancelServer().getName()),
+                componentSerializer.deserialize(ComponentSerializer.toString(event.getKickReasonComponent()))
         );
-        BuX.getApi().getEventLoader().launchEvent( userServerKickEvent );
+        BuX.getApi().getEventLoader().launchEvent(userServerKickEvent);
 
-        if ( userServerKickEvent.isTargetChanged() )
-        {
-            event.setCancelServer( ( (BungeeServer) userServerKickEvent.getRedirectServer() ).getServerInfo() );
-            event.setKickReasonComponent( ComponentSerializer.parse( componentSerializer.serialize( userServerKickEvent.getKickMessage() ) ) );
+        if (userServerKickEvent.isTargetChanged()) {
+            event.setCancelServer(((BungeeServer) userServerKickEvent.getRedirectServer()).getServerInfo());
+            event.setKickReasonComponent(ComponentSerializer.parse(componentSerializer.serialize(userServerKickEvent.getKickMessage())));
         }
     }
 }

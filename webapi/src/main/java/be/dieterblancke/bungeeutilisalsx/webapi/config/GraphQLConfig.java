@@ -10,56 +10,50 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class GraphQLConfig
-{
+public class GraphQLConfig {
 
     @Bean
-    GraphQLScalarType longScalar()
-    {
+    GraphQLScalarType longScalar() {
         return GraphQLScalarType.newScalar()
-                .name( "Long" )
-                .description( "Built-in Long" )
-                .coercing( new GraphqlLongCoercing() )
+                .name("Long")
+                .description("Built-in Long")
+                .coercing(new GraphqlLongCoercing())
                 .build();
     }
 
     @Bean
-    GraphQLScalarType dateScalar()
-    {
+    GraphQLScalarType dateScalar() {
         return GraphQLScalarType.newScalar()
-                .name( "Date" )
-                .description( "Java 8 LocalDate as scalar." )
-                .coercing( new DateCoercing() )
+                .name("Date")
+                .description("Java 8 LocalDate as scalar.")
+                .coercing(new DateCoercing())
                 .build();
     }
 
     @Bean
-    GraphQLScalarType dateTimeScalar()
-    {
+    GraphQLScalarType dateTimeScalar() {
         return GraphQLScalarType.newScalar()
-                .name( "DateTime" )
-                .description( "Java 8 LocalDate as scalar." )
-                .coercing( new DateTimeCoercing() )
+                .name("DateTime")
+                .description("Java 8 LocalDate as scalar.")
+                .coercing(new DateTimeCoercing())
                 .build();
     }
 
     @Bean
-    GraphQLScalarType uuidScalar()
-    {
+    GraphQLScalarType uuidScalar() {
         return GraphQLScalarType.newScalar()
-                .name( "UUID" )
-                .description( "Java UUID as scalar." )
-                .coercing( new UuidCoercing() )
+                .name("UUID")
+                .description("Java UUID as scalar.")
+                .coercing(new UuidCoercing())
                 .build();
     }
 
     @Bean
-    GraphQLScalarType voidScalar()
-    {
+    GraphQLScalarType voidScalar() {
         return GraphQLScalarType.newScalar()
-                .name( "Void" )
-                .description( "Java Void type as scalar." )
-                .coercing( new VoidCoercing() )
+                .name("Void")
+                .description("Java Void type as scalar.")
+                .coercing(new VoidCoercing())
                 .build();
     }
 }

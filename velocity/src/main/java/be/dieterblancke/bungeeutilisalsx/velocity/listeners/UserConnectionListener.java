@@ -18,30 +18,25 @@ import com.velocitypowered.api.event.player.ServerConnectedEvent;
 import com.velocitypowered.api.event.player.ServerPreConnectEvent;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
-import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 
 import java.util.Optional;
 
-public class UserConnectionListener
-{
+public class UserConnectionListener {
 
     @Subscribe
-    public void onConnect( final PostLoginEvent event )
-    {
+    public void onConnect(final PostLoginEvent event) {
         final VelocityUser user = new VelocityUser();
 
-        user.load( event.getPlayer() );
+        user.load(event.getPlayer());
     }
 
     // Executing on FIRST to get it to execute early on in the quit procedure
-    @Subscribe( order = PostOrder.FIRST )
-    public void onDisconnect( final DisconnectEvent event )
-    {
+    @Subscribe(order = PostOrder.FIRST)
+    public void onDisconnect(final DisconnectEvent event) {
         final Player player = event.getPlayer();
-        final Optional<User> optional = BuX.getApi().getUser( event.getPlayer().getUsername() );
+        final Optional<User> optional = BuX.getApi().getUser(event.getPlayer().getUsername());
 
-        if ( optional.isEmpty() )
-        {
+        if (optional.isEmpty()) {
             return;
         }
         final User user = optional.get();
@@ -49,77 +44,64 @@ public class UserConnectionListener
     }
 
     @Subscribe
-    public void onConnect( final ServerPreConnectEvent event )
-    {
-        final Optional<User> optional = BuX.getApi().getUser( event.getPlayer().getUsername() );
+    public void onConnect(final ServerPreConnectEvent event) {
+        final Optional<User> optional = BuX.getApi().getUser(event.getPlayer().getUsername());
         final Optional<RegisteredServer> targetServer = event.getResult().getServer();
 
-        if ( optional.isEmpty() || targetServer.isPresent() )
-        {
+        if (optional.isEmpty() || targetServer.isPresent()) {
             return;
         }
         final UserServerConnectEvent userServerConnectEvent = new UserServerConnectEvent(
                 optional.get(),
-                BuX.getInstance().serverOperations().getServerInfo( targetServer.get().getServerInfo().getName() ),
+                BuX.getInstance().serverOperations().getServerInfo(targetServer.get().getServerInfo().getName()),
                 ConnectReason.UNKNOWN // Velocity does not seem to have connect reasons as of now
         );
-        BuX.getApi().getEventLoader().launchEvent( userServerConnectEvent );
-        if ( userServerConnectEvent.isCancelled() )
-        {
-            event.setResult( ServerPreConnectEvent.ServerResult.denied() );
+        BuX.getApi().getEventLoader().launchEvent(userServerConnectEvent);
+        if (userServerConnectEvent.isCancelled()) {
+            event.setResult(ServerPreConnectEvent.ServerResult.denied());
         }
-        event.setResult( ServerPreConnectEvent.ServerResult.allowed(
-                ( (VelocityServer) userServerConnectEvent.getTarget() ).getRegisteredServer()
-        ) );
+        event.setResult(ServerPreConnectEvent.ServerResult.allowed(
+                ((VelocityServer) userServerConnectEvent.getTarget()).getRegisteredServer()
+        ));
     }
 
     @Subscribe
-    public void onConnect( final ServerConnectedEvent event )
-    {
-        final Optional<User> optional = BuX.getApi().getUser( event.getPlayer().getUsername() );
+    public void onConnect(final ServerConnectedEvent event) {
+        final Optional<User> optional = BuX.getApi().getUser(event.getPlayer().getUsername());
 
-        if ( optional.isPresent() )
-        {
+        if (optional.isPresent()) {
             final UserServerConnectedEvent userServerConnectedEvent = new UserServerConnectedEvent(
                     optional.get(),
-                    event.getPreviousServer().map( server -> BuX.getInstance().serverOperations().getServerInfo( server.getServerInfo().getName() ) ),
-                    BuX.getInstance().serverOperations().getServerInfo( event.getServer().getServerInfo().getName() )
+                    event.getPreviousServer().map(server -> BuX.getInstance().serverOperations().getServerInfo(server.getServerInfo().getName())),
+                    BuX.getInstance().serverOperations().getServerInfo(event.getServer().getServerInfo().getName())
             );
-            BuX.getApi().getEventLoader().launchEvent( userServerConnectedEvent );
-        }
-        else
-        {
-            return;
+            BuX.getApi().getEventLoader().launchEvent(userServerConnectedEvent);
         }
     }
 
     @Subscribe
-    public void onConnect( KickedFromServerEvent event )
-    {
-        Optional<User> optional = BuX.getApi().getUser( event.getPlayer().getUsername() );
+    public void onConnect(KickedFromServerEvent event) {
+        Optional<User> optional = BuX.getApi().getUser(event.getPlayer().getUsername());
 
-        if ( optional.isEmpty() )
-        {
+        if (optional.isEmpty()) {
             return;
         }
 
-        GsonComponentSerializer componentSerializer = GsonComponentSerializer.gson();
         UserServerKickEvent userServerKickEvent = new UserServerKickEvent(
                 optional.get(),
-                event.getServer() == null ? null : BuX.getInstance().serverOperations().getServerInfo( event.getServer().getServerInfo().getName() ),
+                event.getServer() == null ? null : BuX.getInstance().serverOperations().getServerInfo(event.getServer().getServerInfo().getName()),
                 event.getResult() instanceof RedirectPlayer
-                        ? BuX.getInstance().serverOperations().getServerInfo( ( (RedirectPlayer) event.getResult() ).getServer().getServerInfo().getName() )
+                        ? BuX.getInstance().serverOperations().getServerInfo(((RedirectPlayer) event.getResult()).getServer().getServerInfo().getName())
                         : null,
-                event.getServerKickReason().orElse( null )
+                event.getServerKickReason().orElse(null)
         );
-        BuX.getApi().getEventLoader().launchEvent( userServerKickEvent );
+        BuX.getApi().getEventLoader().launchEvent(userServerKickEvent);
 
-        if ( userServerKickEvent.isTargetChanged() )
-        {
-            event.setResult( RedirectPlayer.create(
-                    ( (VelocityServer) userServerKickEvent.getRedirectServer() ).getRegisteredServer(),
+        if (userServerKickEvent.isTargetChanged()) {
+            event.setResult(RedirectPlayer.create(
+                    ((VelocityServer) userServerKickEvent.getRedirectServer()).getRegisteredServer(),
                     userServerKickEvent.getKickMessage()
-            ) );
+            ));
         }
     }
 }
