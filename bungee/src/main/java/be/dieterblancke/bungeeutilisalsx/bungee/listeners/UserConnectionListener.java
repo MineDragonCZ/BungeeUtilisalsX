@@ -24,6 +24,8 @@ public class UserConnectionListener implements Listener {
         final BungeeUser user = new BungeeUser();
 
         user.load(event.getPlayer());
+        String serverName = event.getPlayer().getServer().getInfo().getName();
+        BuX.getInstance().getAbstractStorageManager().getDao().getUserDao().updateUserCurrentServer(user.getUuid(), serverName);
     }
 
     // Executing on LOWEST priority to get it to execute early on in the quit procedure
@@ -57,6 +59,8 @@ public class UserConnectionListener implements Listener {
         }
 
         event.setTarget(((BungeeServer) userServerConnectEvent.getTarget()).getServerInfo());
+        String serverName = userServerConnectEvent.getTarget().getName();
+        BuX.getInstance().getAbstractStorageManager().getDao().getUserDao().updateUserCurrentServer(optional.get().getUuid(), serverName);
     }
 
     @EventHandler
@@ -101,5 +105,7 @@ public class UserConnectionListener implements Listener {
             event.setCancelServer(((BungeeServer) userServerKickEvent.getRedirectServer()).getServerInfo());
             event.setKickReasonComponent(ComponentSerializer.parse(componentSerializer.serialize(userServerKickEvent.getKickMessage())));
         }
+        String serverName = userServerKickEvent.getRedirectServer().getName();
+        BuX.getInstance().getAbstractStorageManager().getDao().getUserDao().updateUserCurrentServer(optional.get().getUuid(), serverName);
     }
 }
