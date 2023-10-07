@@ -7,6 +7,8 @@ import be.dieterblancke.bungeeutilisalsx.common.api.utils.reflection.UrlLibraryC
 import lombok.Getter;
 import net.md_5.bungee.api.plugin.Plugin;
 
+import static be.dieterblancke.bungeeutilisalsx.bungee.license.LicenseManager.checkLicense;
+
 public class Bootstrap extends Plugin
 {
 
@@ -24,6 +26,14 @@ public class Bootstrap extends Plugin
 
         abstractBungeeUtilisalsX = new BungeeUtilisalsX();
         abstractBungeeUtilisalsX.initialize();
+
+        /* Check license */
+        boolean result = checkLicense();
+        if (!result) {
+            abstractBungeeUtilisalsX.shutdown();
+            instance = null;
+            throw new RuntimeException("Neplatná licence!");
+        }
     }
 
     @Override

@@ -24,6 +24,7 @@ public class UserConnectionListener implements Listener {
         final BungeeUser user = new BungeeUser();
 
         user.load(event.getPlayer());
+        if(event.getPlayer().getServer() == null) return;
         String serverName = event.getPlayer().getServer().getInfo().getName();
         BuX.getInstance().getAbstractStorageManager().getDao().getUserDao().updateUserCurrentServer(user.getUuid(), serverName);
     }

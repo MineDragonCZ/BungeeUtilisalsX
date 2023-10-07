@@ -1,6 +1,9 @@
 # Enable to get debug messages (where they are enabled)
 debug: false
 
+# License lol
+license-key: 'your license key'
+
 # Should JavaScript placeholders be loaded and enabled?
 scripting: false
 
