@@ -106,7 +106,7 @@ public class UserConnectionListener implements Listener {
             event.setCancelServer(((BungeeServer) userServerKickEvent.getRedirectServer()).getServerInfo());
             event.setKickReasonComponent(ComponentSerializer.parse(componentSerializer.serialize(userServerKickEvent.getKickMessage())));
         }
-        String serverName = userServerKickEvent.getRedirectServer().getName();
+        String serverName = (userServerKickEvent.getRedirectServer() != null ? userServerKickEvent.getRedirectServer().getName() : "");
         BuX.getInstance().getAbstractStorageManager().getDao().getUserDao().updateUserCurrentServer(optional.get().getUuid(), serverName);
     }
 }
