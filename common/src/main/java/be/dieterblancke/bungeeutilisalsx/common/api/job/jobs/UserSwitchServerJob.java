@@ -11,32 +11,27 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class UserSwitchServerJob implements MultiProxyJob
-{
+public class UserSwitchServerJob implements MultiProxyJob {
 
     private final String targetName;
     private final String server;
 
-    public UserSwitchServerJob( final String targetName,
-                                final String server )
-    {
+    public UserSwitchServerJob(final String targetName,
+                               final String server) {
         this.targetName = targetName;
         this.server = server;
     }
 
     @Override
-    public boolean isAsync()
-    {
+    public boolean isAsync() {
         return true;
     }
 
-    public Optional<User> getTargetUser()
-    {
-        return BuX.getApi().getUser( targetName );
+    public Optional<User> getTargetUser() {
+        return BuX.getApi().getUser(targetName);
     }
 
-    public Optional<IProxyServer> getTargetServer()
-    {
-        return Optional.ofNullable( BuX.getInstance().serverOperations().getServerInfo( server ) );
+    public Optional<IProxyServer> getTargetServer() {
+        return Optional.ofNullable(BuX.getInstance().serverOperations().getServerInfo(server));
     }
 }

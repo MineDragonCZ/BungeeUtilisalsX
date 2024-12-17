@@ -7,16 +7,14 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ExternalPluginBroadcastLanguageMessageJob implements MultiProxyJob
-{
+public class ExternalPluginBroadcastLanguageMessageJob implements MultiProxyJob {
 
     private final String pluginName;
     private final String languagePath;
     private final String permission;
     private final MessagePlaceholders placeholders;
 
-    public ExternalPluginBroadcastLanguageMessageJob( String pluginName, String languagePath, String permission, MessagePlaceholders placeholders )
-    {
+    public ExternalPluginBroadcastLanguageMessageJob(String pluginName, String languagePath, String permission, MessagePlaceholders placeholders) {
         this.pluginName = pluginName;
         this.languagePath = languagePath;
         this.permission = permission;
@@ -24,8 +22,7 @@ public class ExternalPluginBroadcastLanguageMessageJob implements MultiProxyJob
     }
 
     @Override
-    public boolean isAsync()
-    {
+    public boolean isAsync() {
         return true;
     }
 }

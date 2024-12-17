@@ -7,23 +7,20 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class BroadcastLanguageMessageJob implements MultiProxyJob
-{
+public class BroadcastLanguageMessageJob implements MultiProxyJob {
 
     private final String languagePath;
     private final String permission;
     private final MessagePlaceholders placeholders;
 
-    public BroadcastLanguageMessageJob( final String languagePath, final String permission, final MessagePlaceholders placeholders )
-    {
+    public BroadcastLanguageMessageJob(final String languagePath, final String permission, final MessagePlaceholders placeholders) {
         this.languagePath = languagePath;
         this.permission = permission;
         this.placeholders = placeholders;
     }
 
     @Override
-    public boolean isAsync()
-    {
+    public boolean isAsync() {
         return true;
     }
 }

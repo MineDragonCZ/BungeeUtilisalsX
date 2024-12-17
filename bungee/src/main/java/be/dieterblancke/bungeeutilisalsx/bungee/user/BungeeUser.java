@@ -3,11 +3,8 @@ package be.dieterblancke.bungeeutilisalsx.bungee.user;
 import be.dieterblancke.bungeeutilisalsx.bungee.BungeeUtilisalsX;
 import be.dieterblancke.bungeeutilisalsx.bungee.utils.BungeeServer;
 import be.dieterblancke.bungeeutilisalsx.common.BuX;
-import be.dieterblancke.bungeeutilisalsx.common.api.bossbar.IBossBar;
 import be.dieterblancke.bungeeutilisalsx.common.api.event.events.user.UserLoadEvent;
 import be.dieterblancke.bungeeutilisalsx.common.api.event.events.user.UserUnloadEvent;
-import be.dieterblancke.bungeeutilisalsx.common.api.friends.FriendData;
-import be.dieterblancke.bungeeutilisalsx.common.api.friends.FriendSettings;
 import be.dieterblancke.bungeeutilisalsx.common.api.language.Language;
 import be.dieterblancke.bungeeutilisalsx.common.api.placeholder.PlaceHolderAPI;
 import be.dieterblancke.bungeeutilisalsx.common.api.server.IProxyServer;
@@ -40,8 +37,6 @@ import java.util.*;
 @Getter
 public class BungeeUser implements User
 {
-
-    private final List<IBossBar> activeBossBars = Collections.synchronizedList( new ArrayList<>() );
     private ProxiedPlayer player;
     private String name;
     private UUID uuid;
@@ -50,8 +45,6 @@ public class BungeeUser implements User
     private UserStorage storage;
     private boolean socialSpy;
     private boolean commandSpy;
-    private List<FriendData> friends = Lists.newArrayList();
-    private FriendSettings friendSettings;
     private boolean inStaffChat;
     private boolean msgToggled;
     private boolean vanished;
@@ -122,19 +115,6 @@ public class BungeeUser implements User
             }
         } );
         dao.getUserDao().getSettings( uuid ).thenAccept( settings -> userSettings = settings );
-
-        if ( ConfigFiles.FRIENDS_CONFIG.isEnabled() )
-        {
-            dao.getFriendsDao().getFriends( uuid ).thenAccept( friendsList -> friends = friendsList );
-            dao.getFriendsDao().getSettings( uuid ).thenAccept( settings -> friendSettings = settings );
-
-            BuX.debug( "Friend list of " + name );
-            BuX.debug( Arrays.toString( friends.toArray() ) );
-        }
-        else
-        {
-            friendSettings = new FriendSettings();
-        }
 
         BuX.getInstance().getActivePermissionIntegration().getGroup( uuid ).thenAccept( group -> this.group = group );
         BuX.getInstance().getScheduler().runTaskDelayed( 15, TimeUnit.SECONDS, this::sendOfflineMessages );

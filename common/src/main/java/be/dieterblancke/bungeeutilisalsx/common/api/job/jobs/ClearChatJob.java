@@ -8,15 +8,13 @@ import lombok.Setter;
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class ClearChatJob implements MultiProxyJob
-{
+public class ClearChatJob implements MultiProxyJob {
 
     private final String serverName;
     private final String by;
 
     @Override
-    public boolean isAsync()
-    {
+    public boolean isAsync() {
         return true;
     }
 }

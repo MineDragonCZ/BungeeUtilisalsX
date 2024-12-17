@@ -8,23 +8,20 @@ import java.util.UUID;
 
 @Getter
 @Setter
-public class CommandSpyJob extends HasUserJob
-{
+public class CommandSpyJob extends HasUserJob {
 
     private final String serverName;
     private final String command;
 
-    public CommandSpyJob( final UUID uuid, final String userName, final String serverName, final String command )
-    {
-        super( uuid, userName );
+    public CommandSpyJob(final UUID uuid, final String userName, final String serverName, final String command) {
+        super(uuid, userName);
 
         this.serverName = serverName;
         this.command = command;
     }
 
     @Override
-    public boolean isAsync()
-    {
+    public boolean isAsync() {
         return true;
     }
 }

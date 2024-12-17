@@ -1,7 +1,6 @@
 package be.dieterblancke.bungeeutilisalsx.common.api.job.jobs;
 
-public enum PrivateMessageType
-{
+public enum PrivateMessageType {
     MSG,
     REPLY
 }

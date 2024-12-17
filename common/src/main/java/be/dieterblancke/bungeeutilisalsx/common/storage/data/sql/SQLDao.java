@@ -1,26 +1,23 @@
 package be.dieterblancke.bungeeutilisalsx.common.storage.data.sql;
 
-import be.dieterblancke.bungeeutilisalsx.common.api.storage.dao.*;
-import be.dieterblancke.bungeeutilisalsx.common.storage.data.sql.dao.*;
+import be.dieterblancke.bungeeutilisalsx.common.api.storage.dao.ApiTokenDao;
+import be.dieterblancke.bungeeutilisalsx.common.api.storage.dao.Dao;
+import be.dieterblancke.bungeeutilisalsx.common.api.storage.dao.OfflineMessageDao;
+import be.dieterblancke.bungeeutilisalsx.common.api.storage.dao.UserDao;
+import be.dieterblancke.bungeeutilisalsx.common.storage.data.sql.dao.SqlApiTokenDao;
+import be.dieterblancke.bungeeutilisalsx.common.storage.data.sql.dao.SqlOfflineMessageDao;
+import be.dieterblancke.bungeeutilisalsx.common.storage.data.sql.dao.SqlUserDao;
 import lombok.Getter;
 
 @Getter
-public class SQLDao implements Dao
-{
+public class SQLDao implements Dao {
 
     private final UserDao userDao;
-    private final PunishmentDao punishmentDao;
-    private final FriendsDao friendsDao;
-    private final ReportsDao reportsDao;
     private final OfflineMessageDao offlineMessageDao;
     private final ApiTokenDao apiTokenDao;
 
-    public SQLDao()
-    {
+    public SQLDao() {
         this.userDao = new SqlUserDao();
-        this.punishmentDao = new SqlPunishmentDao();
-        this.friendsDao = new SqlFriendsDao();
-        this.reportsDao = new SqlReportsDao();
         this.offlineMessageDao = new SqlOfflineMessageDao();
         this.apiTokenDao = new SqlApiTokenDao();
     }

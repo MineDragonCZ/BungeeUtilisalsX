@@ -1,9 +1,6 @@
 package be.dieterblancke.bungeeutilisalsx.common.api.user.interfaces;
 
 import be.dieterblancke.bungeeutilisalsx.common.BuX;
-import be.dieterblancke.bungeeutilisalsx.common.api.bossbar.IBossBar;
-import be.dieterblancke.bungeeutilisalsx.common.api.friends.FriendData;
-import be.dieterblancke.bungeeutilisalsx.common.api.friends.FriendSettings;
 import be.dieterblancke.bungeeutilisalsx.common.api.language.Language;
 import be.dieterblancke.bungeeutilisalsx.common.api.language.LanguageConfig;
 import be.dieterblancke.bungeeutilisalsx.common.api.placeholder.PlaceHolderAPI;
@@ -312,16 +309,6 @@ public interface User extends Messageable, HasLanguageConfig, HasMessagePlacehol
     Version getVersion();
 
     /**
-     * @return a list of the user's Friends
-     */
-    List<FriendData> getFriends();
-
-    /**
-     * @return the used friend settings
-     */
-    FriendSettings getFriendSettings();
-
-    /**
      * @param permission The permission to check
      * @return This simply calls the parent.hasPermission() method
      */
@@ -478,11 +465,6 @@ public interface User extends Messageable, HasLanguageConfig, HasMessagePlacehol
      * @return a list with the user settings
      */
     UserSettings getSettings();
-
-    /**
-     * @return a list with the active boss bars for this user
-     */
-    List<IBossBar> getActiveBossBars();
 
     /**
      * @return the current user instance as Audience

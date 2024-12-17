@@ -40,17 +40,5 @@ public class UserPluginMessageReceiveEventExecutor implements EventExecutor
                 );
             }
         }
-        else if ( subchannel.equalsIgnoreCase( "server-balancer" ) )
-        {
-            String serverName = input.readUTF();
-
-            if ( BuX.getApi().getServerBalancer() != null )
-            {
-                ConfigFiles.SERVER_BALANCER_CONFIG.getServerBalancerGroupByName( serverName )
-                        .or( () -> ConfigFiles.SERVER_BALANCER_CONFIG.getServerBalancerGroupFor( serverName ) )
-                        .flatMap( balancerGroup -> BuX.getApi().getServerBalancer().getOptimalServer( balancerGroup ) )
-                        .ifPresent( user::sendToServer );
-            }
-        }
     }
 }

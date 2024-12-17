@@ -11,27 +11,23 @@ import java.util.UUID;
 
 @Getter
 @Setter
-public class UserGetPingJob extends HasUserJob
-{
+public class UserGetPingJob extends HasUserJob {
 
     private final String targetName;
 
-    public UserGetPingJob( final UUID uuid,
-                           final String userName,
-                           final String targetName )
-    {
-        super( uuid, userName );
+    public UserGetPingJob(final UUID uuid,
+                          final String userName,
+                          final String targetName) {
+        super(uuid, userName);
         this.targetName = targetName;
     }
 
     @Override
-    public boolean isAsync()
-    {
+    public boolean isAsync() {
         return true;
     }
 
-    public Optional<User> getTargetUser()
-    {
-        return BuX.getApi().getUser( targetName );
+    public Optional<User> getTargetUser() {
+        return BuX.getApi().getUser(targetName);
     }
 }

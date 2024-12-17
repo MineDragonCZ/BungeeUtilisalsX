@@ -8,16 +8,14 @@ import lombok.Setter;
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class BroadcastMessageJob implements MultiProxyJob
-{
+public class BroadcastMessageJob implements MultiProxyJob {
 
     private final String prefix;
     private final String message;
     private final String permission;
 
     @Override
-    public boolean isAsync()
-    {
+    public boolean isAsync() {
         return true;
     }
 }

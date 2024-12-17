@@ -15,23 +15,8 @@ public class ConfigFiles
     public static MotdConfig MOTD = new MotdConfig( "/configurations/motd/motd.yml" );
     public static Config CUSTOMCOMMANDS = new Config( "/configurations/commands/customcommands.yml" );
     public static Config GENERALCOMMANDS = new Config( "/configurations/commands/generalcommands.yml" );
-    public static CommandBlockerConfig COMMAND_BLOCKER = new CommandBlockerConfig( "/configurations/commands/commandblocker.yml" );
-    public static Config ANTISWEAR = new Config( "/configurations/chat/protection/antiswear.yml" );
-    public static Config ANTICAPS = new Config( "/configurations/chat/protection/anticaps.yml" );
-    public static Config ANTIAD = new Config( "/configurations/chat/protection/antiadvertise.yml" );
-    public static Config ANTISPAM = new Config( "/configurations/chat/protection/antispam.yml" );
-    public static Config UTFSYMBOLS = new Config( "/configurations/chat/utfsymbols.yml" );
-    public static FriendsConfig FRIENDS_CONFIG = new FriendsConfig( "/configurations/friends.yml" );
-    public static Config PUNISHMENT_CONFIG = new Config( "/configurations/punishments/config.yml" );
-    public static PunishmentsActionsConfig PUNISHMENT_ACTIONS = new PunishmentsActionsConfig( "/configurations/punishments/actions.yml" );
-    public static PunishmentsTracksConfig PUNISHMENT_TRACKS = new PunishmentsTracksConfig( "/configurations/punishments/tracks.yml" );
     public static Config LANGUAGES_CONFIG = new Config( "/configurations/languages/config.yml" );
     public static RanksConfig RANKS = new RanksConfig( "/configurations/chat/ranks.yml" );
-    public static IngameMotdConfig INGAME_MOTD_CONFIG = new IngameMotdConfig( "/configurations/motd/ingame-motd.yml" );
-    public static WebhookConfig WEBHOOK_CONFIG = new WebhookConfig( "/configurations/webhooks.yml" );
-    public static PartyConfig PARTY_CONFIG = new PartyConfig( "/configurations/party/config.yml" );
-    public static ChatSyncConfig CHAT_SYNC_CONFIG = new ChatSyncConfig( "/configurations/chat/chatsync.yml" );
-    public static ServerBalancerConfig SERVER_BALANCER_CONFIG = new ServerBalancerConfig( "/configurations/serverbalancer.yml" );
 
     public static void loadAllConfigs()
     {

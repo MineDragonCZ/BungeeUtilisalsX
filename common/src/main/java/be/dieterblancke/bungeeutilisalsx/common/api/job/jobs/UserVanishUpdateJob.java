@@ -8,23 +8,20 @@ import java.util.UUID;
 
 @Getter
 @Setter
-public class UserVanishUpdateJob extends HasUserJob
-{
+public class UserVanishUpdateJob extends HasUserJob {
 
     private final boolean vanished;
 
-    public UserVanishUpdateJob( final UUID uuid,
-                                final String userName,
-                                final boolean vanished )
-    {
-        super( uuid, userName );
+    public UserVanishUpdateJob(final UUID uuid,
+                               final String userName,
+                               final boolean vanished) {
+        super(uuid, userName);
 
         this.vanished = vanished;
     }
 
     @Override
-    public boolean isAsync()
-    {
+    public boolean isAsync() {
         return true;
     }
 }
