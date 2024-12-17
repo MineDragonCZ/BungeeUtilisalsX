@@ -7,6 +7,7 @@ import be.dieterblancke.bungeeutilisalsx.common.BuX;
 import be.dieterblancke.bungeeutilisalsx.common.api.event.events.other.ProxyMotdPingEvent;
 import be.dieterblancke.bungeeutilisalsx.common.api.pluginsupport.PluginSupport;
 import be.dieterblancke.bungeeutilisalsx.common.motd.MotdConnection;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
 import net.md_5.bungee.api.ServerPing;
 import net.md_5.bungee.api.ServerPing.PlayerInfo;
@@ -15,6 +16,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.PendingConnection;
 import net.md_5.bungee.api.event.ProxyPingEvent;
 import net.md_5.bungee.api.plugin.Listener;
+import net.md_5.bungee.chat.TextComponentSerializer;
 import net.md_5.bungee.event.EventHandler;
 
 import java.net.InetSocketAddress;
@@ -46,7 +48,9 @@ public class MotdPingListener implements Listener
                                     .map( it -> new PlayerInfo( it.getName(), it.getUuid() ) )
                                     .toArray( PlayerInfo[]::new )
                     ) );
-                    event.getResponse().setDescriptionComponent( new TextComponent( BungeeComponentSerializer.get().serialize( e.getMotdPingResponse().getMotd() ) ) );
+                    event.getResponse().setDescriptionComponent(
+                            new TextComponent( BungeeComponentSerializer.get().serialize( e.getMotdPingResponse().getMotd() ) )
+                    );
 
                     PluginSupport.getPluginSupport( TritonBungeePluginSupport.class )
                             .ifPresent( tritonBungeePluginSupport -> tritonBungeePluginSupport.handleMotd( event ) );

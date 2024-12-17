@@ -16,7 +16,6 @@ public class ConfigFiles
     public static Config CUSTOMCOMMANDS = new Config( "/configurations/commands/customcommands.yml" );
     public static Config GENERALCOMMANDS = new Config( "/configurations/commands/generalcommands.yml" );
     public static Config LANGUAGES_CONFIG = new Config( "/configurations/languages/config.yml" );
-    public static RanksConfig RANKS = new RanksConfig( "/configurations/chat/ranks.yml" );
 
     public static void loadAllConfigs()
     {

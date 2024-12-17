@@ -37,7 +37,7 @@ public class CommandManager {
     }
 
     protected void registerGeneralCommands() {
-        registerGeneralCommand("bungeeutilisals", new PluginCommandCall());
+        //registerGeneralCommand("bungeeutilisals", new PluginCommandCall());
         registerGeneralCommand("server", new ServerCommandCall());
         registerGeneralCommand("find", new FindCommandCall());
         registerGeneralCommand("glag", new GLagCommandCall());

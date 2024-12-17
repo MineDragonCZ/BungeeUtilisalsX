@@ -12,6 +12,11 @@ timezone:
   enabled: false
   zone: Europe/Brussels
 
+joined-host-replacer:
+  - output: "mc.zabak.eu"
+    keys:
+      - '_dc-srv.03f8d3e097ea._minecraft._tcp.mc.zabak.eu'
+
 multi-proxy:
   # Should multi proxy support be enabled? This REQUIRES RabbitMQ AND Redis to work!
   enabled: false

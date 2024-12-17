@@ -42,9 +42,6 @@ public class MessageUtils
             .character( SECTION_CHAR )
             .build();
 
-
-    private static final Pattern HEX_PATTERN = Pattern.compile( "<#([A-Fa-f0-9]){6}>" );
-    private static final Pattern GRADIENT_HEX_PATTERN = Pattern.compile( "(\\{(#[A-Fa-f0-9]{6})})(.+?)(\\{/(#[A-Fa-f0-9]{6})})" );
     private static final Map<String, String> COLOR_MAPPINGS = new HashMap<>()
     {{
         put( "0", "black" );
@@ -104,23 +101,6 @@ public class MessageUtils
         {
             text = text.replace( "&" + entry.getKey(), "<" + entry.getValue() + ">" );
             text = text.replace( "§" + entry.getKey(), "<" + entry.getValue() + ">" );
-        }
-
-        return text;
-    }
-
-    private static String fixHexColors( String text )
-    {
-        Matcher matcher = HEX_PATTERN.matcher( text );
-
-        while ( matcher.find() )
-        {
-            String before = text.substring( 0, matcher.start() );
-            String hexColor = matcher.group().substring( 1, matcher.group().length() - 1 );
-            String after = text.substring( matcher.end() );
-
-            text = before + "<" + hexColor + ">" + after;
-            matcher = HEX_PATTERN.matcher( text );
         }
 
         return text;
